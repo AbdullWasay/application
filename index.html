@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchants Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Professional header styling */
+        .form-header {
+            text-align: center;
+            padding: 60px 40px;
+            background: #0f172a;
+            color: white;
+            margin: 0;
+        }
+
+        .form-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .form-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-header p {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .application-form {
+            background: #ffffff;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 24px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+            position: relative;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: #0f172a;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-grid.two-column {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .form-grid.three-column {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .field-label {
+            color: #334155;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .required-asterisk {
+            color: #dc2626;
+            margin-left: 2px;
+        }
+
+        .form-input {
+            width: 100%;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            background-color: #ffffff;
+            color: #1e293b;
+            border-radius: 8px;
+            padding: 14px 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #0f172a;
+            background-color: #fefefe;
+        }
+
+        .form-input:hover {
+            border-color: #cbd5e1;
+        }
+
+        .dropdown-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .form-dropdown {
+            width: 100%;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            background-color: #ffffff;
+            color: #64748b;
+            border-radius: 8px;
+            padding: 14px 16px;
+            padding-right: 48px;
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-dropdown:focus {
+            outline: none;
+            border-color: #0f172a;
+            color: #1e293b;
+        }
+
+        .dropdown-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #64748b;
+        }
+
+        .address-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .date-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .date-input-wrapper {
+            display: flex;
+            align-items: center;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .date-input-wrapper:focus-within {
+            border-color: #0f172a;
+        }
+
+        .date-main-input {
+            flex: 1;
+            font-size: 16px;
+            border: none;
+            background: transparent;
+            color: #1e293b;
+            padding: 14px 16px;
+            outline: none;
+        }
+
+        .date-icon-btn {
+            background: transparent;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            color: #64748b;
+            transition: color 0.3s ease;
+        }
+
+        .date-icon-btn:hover {
+            color: #0f172a;
+        }
+
+        .hidden-date-input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .name-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .checkbox-group,
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-option,
+        .radio-option {
+            display: flex;
+            align-items: center;
+            color: #334155;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkbox-option:hover,
+        .radio-option:hover {
+            background-color: #f8fafc;
+        }
+
+        .checkbox-input,
+        .radio-input {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            accent-color: #0f172a;
+            cursor: pointer;
+        }
+
+        .textarea-container textarea {
+            width: 100%;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            background-color: #ffffff;
+            color: #1e293b;
+            border-radius: 8px;
+            padding: 14px 16px;
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .textarea-container textarea:focus {
+            outline: none;
+            border-color: #0f172a;
+        }
+
+        .form-hint {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .submit-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .submit-btn {
+            background: #0f172a;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 16px 48px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-btn:hover {
+            background: #1e293b;
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success Message */
+        .success-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .success-content {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 500px;
+            margin: 20px;
+            animation: successSlideIn 0.5s ease-out;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px auto;
+            animation: successCheckmark 0.6s ease-in-out 0.3s both;
+        }
+
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+            color: white;
+        }
+
+        .success-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 16px;
+        }
+
+        .success-text {
+            font-size: 16px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .success-btn {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .success-btn:hover {
+            background: #1e293b;
+        }
+
+        @keyframes successSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes successCheckmark {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Error styling */
+        .error-field {
+            border-color: #dc2626 !important;
+        }
+
+        /* Loading state for form */
+        .form-loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Enhanced mobile responsiveness */
+        @media (max-width: 1024px) {
+            .application-form {
+                padding: 30px;
+            }
+            
+            .form-header {
+                padding: 50px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .application-form {
+                padding: 20px;
+            }
+            
+            .form-header {
+                padding: 40px 20px;
+            }
+            
+            .form-header h1 {
+                font-size: 28px;
+            }
+            
+            .form-header p {
+                font-size: 16px;
+            }
+            
+            .form-grid.two-column,
+            .form-grid.three-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .address-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .name-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .success-content {
+                margin: 10px;
+                padding: 40px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .application-form {
+                padding: 15px;
+            }
+            
+            .form-header {
+                padding: 30px 15px;
+            }
+            
+            .submit-btn {
+                width: 100%;
+                padding: 16px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <!-- Success Message Modal -->
+        <div class="success-message" id="successMessage">
+            <div class="success-content">
+                <div class="success-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h2 class="success-title">Application Submitted Successfully!</h2>
+                <p class="success-text">
+                    Thank you for submitting your merchant application. Our team will review your information and contact you within 24-48 hours to complete the quoting process.
+                </p>
+                <button class="success-btn" onclick="closeSuccessMessage()">Continue</button>
+            </div>
+        </div>
+
+        <!-- Professional Header -->
+        <div class="form-header">
+            <h1>Merchants Application</h1>
+            <p>Please fill out the short form below. One of our experts will contact you to complete the quoting process. No term commitment, no cancellation fees, no hidden fees, no obligation.</p>
+        </div>
+
+        <form action="https://formspree.io/f/xjkoeqbw" method="POST" class="application-form" id="merchantForm">
+            
+            <!-- Business Information Section -->
+            <div class="form-section">
+                <div class="section-header">Business Information</div>
+                
+                <div class="form-grid two-column">
+                    <div class="form-field">
+                        <label class="field-label" for="corporate_name">
+                            Corporate / Legal Name<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="corporate_name" type="text" name="corporate_name" class="form-input" placeholder="Enter your corporate or legal business name" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="ownership_type">
+                            Ownership / Entity Type<span class="required-asterisk">*</span>
+                        </label>
+                        <div class="dropdown-container">
+                            <span class="dropdown-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+                                    <path d="M480-360 280-560h400L480-360Z"></path>
+                                </svg>
+                            </span>
+                            <select id="ownership_type" name="ownership_type" class="form-dropdown" required>
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="Individual / Sole Proprietor">Individual / Sole Proprietor</option>
+                                <option value="Partnership">Partnership</option>
+                                <option value="Corporation">Corporation</option>
+                                <option value="LLC">LLC</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-field full-width">
+                    <label class="field-label" for="business_address_line1">
+                        Business Address<span class="required-asterisk">*</span>
+                    </label>
+                    <input id="business_address_line1" name="business_address_line1" class="form-input" placeholder="Enter Address Line 1" required>
+                    <div class="form-hint">Address Line 1</div>
+                    
+                    <div class="address-grid">
+                        <div>
+                            <input name="business_city" class="form-input" placeholder="Enter City" required>
+                            <div class="form-hint">City</div>
+                        </div>
+                        <div>
+                            <input name="business_state" class="form-input" placeholder="Enter State" required>
+                            <div class="form-hint">State</div>
+                        </div>
+                        <div>
+                            <input name="business_country" class="form-input" placeholder="Enter Country" required>
+                            <div class="form-hint">Country</div>
+                        </div>
+                        <div>
+                            <input name="business_zipcode" class="form-input" placeholder="Enter Zipcode" required>
+                            <div class="form-hint">Zip code</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid two-column">
+                    <div class="form-field">
+                        <label class="field-label" for="founded_date">
+                            Business Founded Date?<span class="required-asterisk">*</span>
+                        </label>
+                        <div class="date-container">
+                            <div class="hidden-date-input">
+                                <input type="date" id="founded_date" name="founded_date" required>
+                            </div>
+                            <div class="date-input-wrapper">
+                                <input class="date-main-input" type="text" placeholder="DD/MM/YYYY" maxlength="10" onclick="document.getElementById('founded_date').showPicker()">
+                                <button type="button" class="date-icon-btn" onclick="document.getElementById('founded_date').showPicker()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                                        <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-hint">Use to select a date</div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="tax_id">
+                            Federal Tax ID / EIN<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="tax_id" type="text" name="tax_id" class="form-input" placeholder="Enter your Federal Tax ID or EIN" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DBA Information Section -->
+            <div class="form-section">
+                <div class="section-header">DBA (Doing Business As) Information</div>
+                
+                <div class="form-field">
+                    <label class="field-label">
+                        Is your DBA (Doing Business As) information same as Corporate/Legal?<span class="required-asterisk">*</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input class="checkbox-input" type="checkbox" name="dba_same" value="Yes">
+                            Yes
+                        </label>
+                        <label class="checkbox-option">
+                            <input class="checkbox-input" type="checkbox" name="dba_same" value="No">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Corporate Contact Information Section -->
+            <div class="form-section">
+                <div class="section-header">Corporate Contact Information</div>
+                
+                <div class="form-grid two-column">
+                    <div class="form-field">
+                        <label class="field-label" for="customer_service_phone">
+                            Customer Service Number<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="customer_service_phone" type="tel" name="customer_service_phone" class="form-input" placeholder="(###) ###-####" required>
+                        <div class="form-hint">Please enter a valid phone number.</div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="customer_service_email">
+                            Customer Service Email<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="customer_service_email" type="email" name="customer_service_email" class="form-input" placeholder="Enter Email Here" required>
+                        <div class="form-hint">Eg.example@example.com</div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="contact_phone">
+                            Contact Phone Number<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="contact_phone" type="tel" name="contact_phone" class="form-input" placeholder="(###) ###-####" required>
+                        <div class="form-hint">Please enter a valid phone number.</div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="contact_email">
+                            Contact Email<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="contact_email" type="email" name="contact_email" class="form-input" placeholder="Enter Email Here" required>
+                        <div class="form-hint">Eg.example@example.com</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Primary Owner Section -->
+            <div class="form-section">
+                <div class="section-header">Primary Owner</div>
+                <div class="form-hint" style="margin-bottom: 24px;">
+                    Please list all owners who, directly or indirectly, through any contract, arrangement, understanding, relationship or otherwise, own 25% or more of the equity interests of the legal entity listed in this application. Additionally, please ensure the owner(s) below equate to a combined ownership of at least 51%.
+                </div>
+                
+                <div class="form-field">
+                    <label class="field-label">
+                        1. Principal Full Name:<span class="required-asterisk">*</span>
+                    </label>
+                    <div class="name-grid">
+                        <div>
+                            <input name="principal1_first_name" class="form-input" placeholder="Enter First Name" required>
+                            <div class="form-hint">First Name</div>
+                        </div>
+                        <div>
+                            <input name="principal1_middle_name" class="form-input" placeholder="Enter Middle Name">
+                            <div class="form-hint">Middle Name</div>
+                        </div>
+                        <div>
+                            <input name="principal1_last_name" class="form-input" placeholder="Enter Last Name" required>
+                            <div class="form-hint">Last Name</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid three-column">
+                    <div class="form-field">
+                        <label class="field-label" for="principal1_ownership">
+                            Ownership Percentage<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="principal1_ownership" type="text" name="principal1_ownership" class="form-input" placeholder="Enter percentage" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="principal1_title">Title</label>
+                        <div class="dropdown-container">
+                            <span class="dropdown-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+                                    <path d="M480-360 280-560h400L480-360Z"></path>
+                                </svg>
+                            </span>
+                            <select id="principal1_title" name="principal1_title" class="form-dropdown">
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="Owner">Owner</option>
+                                <option value="CEO">CEO</option>
+                                <option value="CFO">CFO</option>
+                                <option value="Chairmen">Chairmen</option>
+                                <option value="Co-Owner">Co-Owner</option>
+                                <option value="President">President</option>
+                                <option value="Vice President">Vice President</option>
+                                <option value="General Manager">General Manager</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="principal1_dob">
+                            Date of Birth<span class="required-asterisk">*</span>
+                        </label>
+                        <div class="date-container">
+                            <div class="hidden-date-input">
+                                <input type="date" id="principal1_dob" name="principal1_dob" required>
+                            </div>
+                            <div class="date-input-wrapper">
+                                <input class="date-main-input" type="text" placeholder="DD/MM/YYYY" maxlength="10" onclick="document.getElementById('principal1_dob').showPicker()">
+                                <button type="button" class="date-icon-btn" onclick="document.getElementById('principal1_dob').showPicker()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                                        <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-hint">Use to select a date</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address & Contact Information Section -->
+            <div class="form-section">
+                <div class="section-header">Address & Contact Information</div>
+                
+                <div class="form-field full-width">
+                    <label class="field-label" for="principal1_address_line1">
+                        Home Address:<span class="required-asterisk">*</span>
+                    </label>
+                    <input id="principal1_address_line1" name="principal1_address_line1" class="form-input" placeholder="Enter Address Line 1" required>
+                    <div class="form-hint">Address Line 1</div>
+                    
+                    <div class="address-grid">
+                        <div>
+                            <input name="principal1_city" class="form-input" placeholder="Enter City" required>
+                            <div class="form-hint">City</div>
+                        </div>
+                        <div>
+                            <input name="principal1_state" class="form-input" placeholder="Enter State" required>
+                            <div class="form-hint">State</div>
+                        </div>
+                        <div>
+                            <input name="principal1_country" class="form-input" placeholder="Enter Country" required>
+                            <div class="form-hint">Country</div>
+                        </div>
+                        <div>
+                            <input name="principal1_zipcode" class="form-input" placeholder="Enter Zipcode" required>
+                            <div class="form-hint">Zip code</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid two-column">
+                    <div class="form-field">
+                        <label class="field-label" for="principal1_mobile">
+                            Mobile Number<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="principal1_mobile" type="tel" name="principal1_mobile" class="form-input" placeholder="(###) ###-####" required>
+                        <div class="form-hint">Please enter a valid phone number.</div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="principal1_email">
+                            Email<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="principal1_email" type="email" name="principal1_email" class="form-input" placeholder="Enter Email Here" required>
+                        <div class="form-hint">Eg.example@example.com</div>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label">
+                        Have you (your business or any principal) filed bankruptcy?<span class="required-asterisk">*</span>
+                    </label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input class="radio-input" type="radio" name="principal1_bankruptcy" value="Business Bankruptcy" required>
+                            Business Bankruptcy
+                        </label>
+                        <label class="radio-option">
+                            <input class="radio-input" type="radio" name="principal1_bankruptcy" value="Personal Bankruptcy" required>
+                            Personal Bankruptcy
+                        </label>
+                        <label class="radio-option">
+                            <input class="radio-input" type="radio" name="principal1_bankruptcy" value="Never" required>
+                            Never
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Principal (Optional) -->
+            <div class="form-section">
+                <div class="section-header">2. Principal (Optional)</div>
+                
+                <div class="form-field">
+                    <label class="field-label">2. Principal Full Name:</label>
+                    <div class="name-grid">
+                        <div>
+                            <input name="principal2_first_name" class="form-input" placeholder="Enter First Name">
+                            <div class="form-hint">First Name</div>
+                        </div>
+                        <div>
+                            <input name="principal2_middle_name" class="form-input" placeholder="Enter Middle Name">
+                            <div class="form-hint">Middle Name</div>
+                        </div>
+                        <div>
+                            <input name="principal2_last_name" class="form-input" placeholder="Enter Last Name">
+                            <div class="form-hint">Last Name</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid three-column">
+                    <div class="form-field">
+                        <label class="field-label" for="principal2_ownership">
+                            Ownership Percentage
+                        </label>
+                        <input id="principal2_ownership" type="text" name="principal2_ownership" class="form-input" placeholder="Enter percentage">
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="principal2_title">Title</label>
+                        <div class="dropdown-container">
+                            <span class="dropdown-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+                                    <path d="M480-360 280-560h400L480-360Z"></path>
+                                </svg>
+                            </span>
+                            <select id="principal2_title" name="principal2_title" class="form-dropdown">
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="Owner">Owner</option>
+                                <option value="CEO">CEO</option>
+                                <option value="CFO">CFO</option>
+                                <option value="Chairmen">Chairmen</option>
+                                <option value="Co-Owner">Co-Owner</option>
+                                <option value="President">President</option>
+                                <option value="Vice President">Vice President</option>
+                                <option value="General Manager">General Manager</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="principal2_dob">Date of Birth</label>
+                        <div class="date-container">
+                            <div class="hidden-date-input">
+                                <input type="date" id="principal2_dob" name="principal2_dob">
+                            </div>
+                            <div class="date-input-wrapper">
+                                <input class="date-main-input" type="text" placeholder="DD/MM/YYYY" maxlength="10" onclick="document.getElementById('principal2_dob').showPicker()">
+                                <button type="button" class="date-icon-btn" onclick="document.getElementById('principal2_dob').showPicker()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                                        <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-hint">Use to select a date</div>
+                    </div>
+                </div>
+
+                <div class="form-field full-width">
+                    <label class="field-label" for="principal2_address_line1">
+                        Address & Contact Information
+                    </label>
+                    <input id="principal2_address_line1" name="principal2_address_line1" class="form-input" placeholder="Enter Address Line 1">
+                    <div class="form-hint">Address Line 1</div>
+                    
+                    <div class="address-grid">
+                        <div>
+                            <input name="principal2_city" class="form-input" placeholder="Enter City">
+                            <div class="form-hint">City</div>
+                        </div>
+                        <div>
+                            <input name="principal2_state" class="form-input" placeholder="Enter State">
+                            <div class="form-hint">State</div>
+                        </div>
+                        <div>
+                            <input name="principal2_country" class="form-input" placeholder="Enter Country">
+                            <div class="form-hint">Country</div>
+                        </div>
+                        <div>
+                            <input name="principal2_zipcode" class="form-input" placeholder="Enter Zipcode">
+                            <div class="form-hint">Zip code</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid two-column">
+                    <div class="form-field">
+                        <label class="field-label" for="principal2_mobile">Mobile Phone</label>
+                        <input id="principal2_mobile" type="tel" name="principal2_mobile" class="form-input" placeholder="(###) ###-####">
+                        <div class="form-hint">Please enter a valid phone number.</div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="principal2_email">Email</label>
+                        <input id="principal2_email" type="email" name="principal2_email" class="form-input" placeholder="Enter Email Here">
+                        <div class="form-hint">Eg.example@example.com</div>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label">
+                        Have you (your business or any principal) filed bankruptcy?
+                    </label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input class="radio-input" type="radio" name="principal2_bankruptcy" value="Business Bankruptcy">
+                            Business Bankruptcy
+                        </label>
+                        <label class="radio-option">
+                            <input class="radio-input" type="radio" name="principal2_bankruptcy" value="Personal Bankruptcy">
+                            Personal Bankruptcy
+                        </label>
+                        <label class="radio-option">
+                            <input class="radio-input" type="radio" name="principal2_bankruptcy" value="Never">
+                            Never
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bank Account Information Section -->
+            <div class="form-section">
+                <div class="section-header">Bank Account Information</div>
+                
+                <div class="form-grid two-column">
+                    <div class="form-field">
+                        <label class="field-label" for="bank_routing">
+                            Bank Routing Number<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="bank_routing" type="text" name="bank_routing" class="form-input" placeholder="Enter routing number" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="bank_account">
+                            Bank Account Number<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="bank_account" type="text" name="bank_account" class="form-input" placeholder="Enter account number" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Information Section -->
+            <div class="form-section">
+                <div class="section-header">Payment Information</div>
+                <div class="form-hint" style="margin-bottom: 24px;">
+                    We need a bit of information about your business and how it accepts credit/debit cards.
+                </div>
+                
+                <div class="form-field">
+                    <label class="field-label">
+                        Does this business currently accept credit/debit cards?<span class="required-asterisk">*</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input class="checkbox-input" type="checkbox" name="accepts_cards" value="Yes">
+                            Yes
+                        </label>
+                        <label class="checkbox-option">
+                            <input class="checkbox-input" type="checkbox" name="accepts_cards" value="No">
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-grid two-column">
+                    <div class="form-field">
+                        <label class="field-label" for="processor_name">
+                            Name Of Processor:<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="processor_name" type="text" name="processor_name" class="form-input" placeholder="Enter processor name" required>
+                        <div class="form-hint">Who is Your Processor today</div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="account_shutdown">
+                            Ever had a merchant account shut down.<span class="required-asterisk">*</span>
+                        </label>
+                        <div class="dropdown-container">
+                            <span class="dropdown-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+                                    <path d="M480-360 280-560h400L480-360Z"></path>
+                                </svg>
+                            </span>
+                            <select id="account_shutdown" name="account_shutdown" class="form-dropdown" required>
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="shutdown_processor">
+                        Name of processor that shut you down.<span class="required-asterisk">*</span>
+                    </label>
+                    <input id="shutdown_processor" type="text" name="shutdown_processor" class="form-input" placeholder="Enter processor name" required>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label">
+                        Any Money On Hold<span class="required-asterisk">*</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input class="checkbox-input" type="checkbox" name="money_on_hold" value="Yes">
+                            Yes
+                        </label>
+                        <label class="checkbox-option">
+                            <input class="checkbox-input" type="checkbox" name="money_on_hold" value="No">
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-grid three-column">
+                    <div class="form-field">
+                        <label class="field-label" for="monthly_volume">
+                            Monthly Volume<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="monthly_volume" type="text" name="monthly_volume" class="form-input" placeholder="Enter monthly volume" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="avg_transaction">
+                            Avg Transaction Amount<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="avg_transaction" type="text" name="avg_transaction" class="form-input" placeholder="Enter average amount" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="max_transaction">
+                            Max Transaction Amount<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="max_transaction" type="text" name="max_transaction" class="form-input" placeholder="Enter maximum amount" required>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="product_description">
+                        Describe Your Product/Service<span class="required-asterisk">*</span>
+                    </label>
+                    <div class="textarea-container">
+                        <textarea id="product_description" name="product_description" placeholder="Please describe your products or services in detail..." rows="4" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Intended Usage Section -->
+            <div class="form-section">
+                <div class="section-header">Intended Usage</div>
+                
+                <div class="form-field">
+                    <label class="field-label">
+                        Account Type:<span class="required-asterisk">*</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input class="checkbox-input" type="checkbox" name="account_type" value="Retail">
+                            Retail
+                        </label>
+                        <label class="checkbox-option">
+                            <input class="checkbox-input" type="checkbox" name="account_type" value="Moto (Mail order Telephone order)">
+                            Moto (Mail order Telephone order)
+                        </label>
+                        <label class="checkbox-option">
+                            <input class="checkbox-input" type="checkbox" name="account_type" value="Internet">
+                            Internet
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-grid two-column">
+                    <div class="form-field">
+                        <label class="field-label" for="website_address">
+                            Website Address<span class="required-asterisk">*</span>
+                        </label>
+                        <input id="website_address" type="url" name="website_address" class="form-input" placeholder="https://www.example.com" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label" for="comments">Comments:</label>
+                        <div class="textarea-container">
+                            <textarea id="comments" name="comments" placeholder="Any additional comments or information..." rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="submit-container">
+                <input type="submit" class="submit-btn" value="Submit Application">
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        // Handle date picker display
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInputs = document.querySelectorAll('input[type="date"]');
+            
+            dateInputs.forEach(function(dateInput) {
+                const textInput = dateInput.parentElement.nextElementSibling.querySelector('.date-main-input');
+                
+                dateInput.addEventListener('change', function() {
+                    if (this.value) {
+                        const date = new Date(this.value);
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const year = date.getFullYear();
+                        textInput.value = `${day}/${month}/${year}`;
+                    }
+                });
+            });
+        });
+
+        // Handle checkbox exclusivity for certain fields
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxGroups = [
+                'dba_same',
+                'accepts_cards',
+                'money_on_hold'
+            ];
+
+            checkboxGroups.forEach(function(groupName) {
+                const checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            checkboxes.forEach(function(otherCheckbox) {
+                                if (otherCheckbox !== checkbox) {
+                                    otherCheckbox.checked = false;
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        });
+
+        // Success message functions
+        function showSuccessMessage() {
+            document.getElementById('successMessage').style.display = 'flex';
+        }
+
+        function closeSuccessMessage() {
+            document.getElementById('successMessage').style.display = 'none';
+            // Optionally redirect or reset form
+            document.getElementById('merchantForm').reset();
+        }
+
+        // Enhanced form validation and submission handling
+        document.getElementById('merchantForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission for demo
+            
+            const requiredFields = this.querySelectorAll('[required]');
+            let isValid = true;
+            let firstInvalidField = null;
+
+            // Remove previous error styling
+            requiredFields.forEach(function(field) {
+                field.classList.remove('error-field');
+            });
+
+            // Check each required field
+            requiredFields.forEach(function(field) {
+                if (!field.value.trim()) {
+                    field.classList.add('error-field');
+                    if (!firstInvalidField) {
+                        firstInvalidField = field;
+                    }
+                    isValid = false;
+                }
+            });
+
+            if (!isValid) {
+                // Scroll to first invalid field
+                if (firstInvalidField) {
+                    firstInvalidField.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    firstInvalidField.focus();
+                }
+                
+                alert('Please fill in all required fields marked with a red asterisk (*).');
+                return;
+            }
+
+            // Add loading state
+            this.classList.add('form-loading');
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.value;
+            submitBtn.value = 'Submitting...';
+            submitBtn.disabled = true;
+
+            // Create FormData and submit to Formspree
+            const formData = new FormData(this);
+            
+            fetch('https://formspree.io/f/xjkoeqbw', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    showSuccessMessage();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting your application. Please try again.');
+            })
+            .finally(() => {
+                // Remove loading state
+                this.classList.remove('form-loading');
+                submitBtn.value = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
